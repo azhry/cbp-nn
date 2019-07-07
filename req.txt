@@ -1,0 +1,9 @@
+- Tambahkan menu testing
+- Preprocessing
+	1. cropping (o)
+	2. noise cleaning
+	3. grayscaling / rgb (o)
+	4. resizing
+- Simpan nilai rata-rata gabor dalam file
+- Tabel hasil klasifikasi testing
+- Testing pakai data sekunder, mencari analisa hasil
