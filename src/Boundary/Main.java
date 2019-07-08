@@ -9,7 +9,6 @@ import Control.FileHandler;
 import Control.MathFx;
 import Entity.ImageData;
 import NeuralNetwork.NeuralNetwork;
-import AntColonyOptimization.AntColonyOptimization;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -104,7 +103,6 @@ public class Main extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         loadImageProgramButton = new javax.swing.JButton();
         runNeuralNetworkProgramButton = new javax.swing.JButton();
-        runNeuralNetworkAcoProgramButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -404,22 +402,12 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        runNeuralNetworkAcoProgramButton.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
-        runNeuralNetworkAcoProgramButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/icons8-play-24.png"))); // NOI18N
-        runNeuralNetworkAcoProgramButton.setText("Run Neural Network + ACO");
-        runNeuralNetworkAcoProgramButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                runNeuralNetworkAcoProgramButton(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(loadImageProgramButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(runNeuralNetworkProgramButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(runNeuralNetworkAcoProgramButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(runNeuralNetworkProgramButton, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -427,9 +415,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(loadImageProgramButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(runNeuralNetworkProgramButton)
-                .addGap(18, 18, 18)
-                .addComponent(runNeuralNetworkAcoProgramButton)
-                .addContainerGap(445, Short.MAX_VALUE))
+                .addContainerGap(565, Short.MAX_VALUE))
         );
 
         jSplitPane6.setLeftComponent(jPanel13);
@@ -517,7 +503,7 @@ public class Main extends javax.swing.JFrame {
             for (Map.Entry<String, List<String>> ent: 
                 FileHandler.LABELS.entrySet()) {
                 
-                String path = "data/" + ent.getKey();
+                String path = chooser.getSelectedFile().toString();
                 for (String filename : ent.getValue()) {
                     
                     filenames.add(filename);
@@ -593,11 +579,6 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_runNeuralNetworkProgramButton
 
-    private void runNeuralNetworkAcoProgramButton(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runNeuralNetworkAcoProgramButton
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_runNeuralNetworkAcoProgramButton
-
     private void runNeuralNetwork(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runNeuralNetwork
 
         this.rowLog = new ArrayList<>();
@@ -653,75 +634,6 @@ public class Main extends javax.swing.JFrame {
 
     }//GEN-LAST:event_runNeuralNetwork
 
-    class RunNeuralNetworkAcoWorker extends SwingWorker {
-
-        private final NeuralNetwork nn;
-        private final JProgressBar progressBar;
-        private final javax.swing.JTable resultTable;
-        private final int numberOfAnts;
-        private final double Q;
-        private final double alpha;
-        private final double beta;
-        private final int iteration;
-        private final double[][] features;
-        private final double[][] classes;
-        private final int numHiddenNeuron;
-        private final int epoch;
-        private final double splitRatio;
-        private final double learningRate;
-        private final double evaporationRate;
-        
-        public RunNeuralNetworkAcoWorker(NeuralNetwork nn, 
-                JProgressBar progressBar,  
-                javax.swing.JTable resultTable, 
-                int numberOfAnts, double Q, double alpha, double beta, 
-                double evaporationRate, double rewardFactor,
-                int iteration, double[][] features, double[][] classes, 
-                int numHiddenNeuron, double learningRate, int epoch, 
-                double splitRatio) {
-            
-            this.nn = nn;
-            this.progressBar = progressBar;
-            this.resultTable = resultTable;
-            this.numberOfAnts = numberOfAnts;
-            this.Q = Q;
-            this.evaporationRate = evaporationRate;
-            this.alpha = alpha;
-            this.beta = beta;
-            this.iteration = iteration;
-            this.features = features;
-            this.classes = classes;
-            this.numHiddenNeuron = numHiddenNeuron;
-            this.epoch = epoch;
-            this.splitRatio = splitRatio;
-            this.learningRate = learningRate;
-        }
-        
-        @Override
-        protected void done() {
-           
-            JOptionPane.showMessageDialog(null, 
-                    "Ant Colony Optimization process is done", "Done", 
-                    JOptionPane.INFORMATION_MESSAGE);
-            
-            repaint();
-        }
-        
-        @Override
-        protected Object doInBackground() throws Exception {
-            
-            AntColonyOptimization aco = new AntColonyOptimization(this.nn, 
-                    this.numberOfAnts, this.Q, this.alpha, this.beta, 
-                    this.iteration);
-            aco.executeAco(this.features, this.classes, this.numHiddenNeuron, 
-                    this.learningRate, this.epoch, this.splitRatio, 
-                    this.progressBar, this.resultTable);
-            return null;
-        }
-        
-    }
-    
-    
     class RunNeuralNetworkWorker extends SwingWorker {
 
         private final NeuralNetwork nn;
@@ -1018,7 +930,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JTable resultProgramTable;
     private javax.swing.JButton runGaborButton;
-    private javax.swing.JButton runNeuralNetworkAcoProgramButton;
     private javax.swing.JButton runNeuralNetworkButton;
     private javax.swing.JButton runNeuralNetworkProgramButton;
     private javax.swing.JTextField splitRatioText;

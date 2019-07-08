@@ -21,7 +21,11 @@ import java.util.Set;
 public class MathFx {
     
     public static int sumMap(Map<String, Integer> map) {
-        return map.values().stream().mapToInt(x -> x).sum();
+        int total = 0;
+        for (Map.Entry<String, Integer> e : map.entrySet()) {
+            total += e.getValue();
+        }
+        return total;
     }
     
     public static double randUniform(int n) {
@@ -52,7 +56,7 @@ public class MathFx {
     }
     
     public static List<Map.Entry<Integer, Double>> sortMap(
-            Map<Integer, Double> map, String order) {
+            Map<Integer, Double> map, final String order) {
         Set<Map.Entry<Integer, Double>> set = map.entrySet();
         List<Map.Entry<Integer, Double>> list = new ArrayList<Map.Entry<
                 Integer, Double>>(set);
@@ -74,7 +78,7 @@ public class MathFx {
     }
     
     public static List<Map.Entry<String, Double>> sortMapDouble(
-            Map<String, Double> map, String order) {
+            Map<String, Double> map, final String order) {
         Set<Map.Entry<String, Double>> set = map.entrySet();
         List<Map.Entry<String, Double>> list = new ArrayList<Map.Entry<
                 String, Double>>(set);
