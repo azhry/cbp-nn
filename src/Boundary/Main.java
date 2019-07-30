@@ -89,6 +89,7 @@ public class Main extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         learningRateField = new javax.swing.JTextField();
         runNeuralNetworkButton = new javax.swing.JButton();
+        runNeuralNetworkButton1 = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         classifiedRatio = new javax.swing.JLabel();
@@ -263,6 +264,14 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        runNeuralNetworkButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/icons8-play-24.png"))); // NOI18N
+        runNeuralNetworkButton1.setText("Run Neural Network (No CBP)");
+        runNeuralNetworkButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runNeuralNetworkButton1runNeuralNetworkNoCbp(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -274,13 +283,16 @@ public class Main extends javax.swing.JFrame {
                         .addGap(91, 91, 91)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel21)
-                            .addComponent(epochField, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(learningRateField, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(26, 26, 26)
-                                .addComponent(runNeuralNetworkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(epochField, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(learningRateField, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.LEADING)))
+                                .addGap(27, 27, 27)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(runNeuralNetworkButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(runNeuralNetworkButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)))))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(137, 137, 137)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -295,14 +307,16 @@ public class Main extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(epochField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel22)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(epochField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(runNeuralNetworkButton))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel22)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(learningRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 146, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(learningRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(runNeuralNetworkButton1))
+                .addGap(0, 150, Short.MAX_VALUE))
         );
 
         jSplitPane3.setLeftComponent(jPanel5);
@@ -634,6 +648,61 @@ public class Main extends javax.swing.JFrame {
 
     }//GEN-LAST:event_runNeuralNetwork
 
+    private void runNeuralNetworkButton1runNeuralNetworkNoCbp(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runNeuralNetworkButton1runNeuralNetworkNoCbp
+        
+        this.rowLog = new ArrayList<>();
+        this.outputNeuronLogPanel.removeAll();
+
+        Object[] labels = FileHandler.LABELS.keySet().toArray();
+        Map<String, double[]> encodedLabels = new HashMap<>();
+        for (int i = 0; i < labels.length; i++) {
+            double[] encoded = new double[labels.length];
+            encoded[i] = 1.0;
+            encodedLabels.put((String)labels[i], encoded);
+
+            OutputNeuronLog log = new OutputNeuronLog();
+            log.labelText.setText((String)labels[i]);
+            log.valueText.setText("0.00");
+            this.rowLog.add(log);
+        }
+
+        for (OutputNeuronLog log : this.rowLog) {
+            this.outputNeuronLogPanel.add(log);
+        }
+
+        List<double[]> features = new ArrayList<>();
+        List<double[]> classes = new ArrayList<>();
+
+        if (!this.shuffled) {
+            this.shuffled = true;
+            Collections.shuffle(this.data);
+        }
+
+        for (ImageData img : this.data) {
+            features.add(img.getData());
+            classes.add(encodedLabels.get(img.getLabel()));
+        }
+
+        double[][] finalFeatures = new double[features.size()][];
+        double[][] finalClasses = new double[classes.size()][];
+        for (int i = 0; i < features.size(); i++) {
+            finalFeatures[i] = features.get(i);
+            finalClasses[i] = classes.get(i);
+        }
+        
+        int epoch = Integer.parseInt(String.valueOf(this.epochField.getValue()));
+        double learningRate = Double.parseDouble(
+            this.learningRateField.getText());
+        double splitRatio = Double.parseDouble(this.splitRatioText.getText());
+        NeuralNetwork nn = new NeuralNetwork(finalFeatures, finalClasses,
+            labels.length + 2, learningRate, epoch, splitRatio);
+        new RunNeuralNetworkWorker(nn, this.neuralNetworkProgressBar,
+            this.neuralNetworkLossChart, this.rowLog, this.classifiedRatio,
+            this.nnResultTable)
+        .execute();
+        
+    }//GEN-LAST:event_runNeuralNetworkButton1runNeuralNetworkNoCbp
+
     class RunNeuralNetworkWorker extends SwingWorker {
 
         private final NeuralNetwork nn;
@@ -716,7 +785,6 @@ public class Main extends javax.swing.JFrame {
                 FileHandler.LABELS.entrySet()) {
                 
                 String path = this.path;
-                System.out.println(path);
                 for (String filename : ent.getValue()) {
                     
                     ImageRow ir = new ImageRow();
@@ -931,6 +999,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTable resultProgramTable;
     private javax.swing.JButton runGaborButton;
     private javax.swing.JButton runNeuralNetworkButton;
+    private javax.swing.JButton runNeuralNetworkButton1;
     private javax.swing.JButton runNeuralNetworkProgramButton;
     private javax.swing.JTextField splitRatioText;
     // End of variables declaration//GEN-END:variables

@@ -1,0 +1,16 @@
+@startuml
+| Peneliti |
+start
+:Memilih menu ETL;
+| Sistem |
+:Menampilkan halaman ETL;
+| Peneliti |
+:Menekan tombol Load Image;
+| Sistem |
+:Menampilkan kotak dialog pemilihan Data;
+| Peneliti |
+:Memilih data yang ingin dimuat;
+| Sistem |
+:Menampilkan data yang dimuat;
+stop
+@enduml

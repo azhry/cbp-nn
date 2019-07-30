@@ -1,0 +1,71 @@
+@startuml
+hide footbox
+title Melakukan Pelatihan Propagasi Balik\n
+
+actor Peneliti
+boundary Main
+control RunNeuralNetworkWorker
+control NeuralNetwork
+control Activation
+control Loss
+
+activate Peneliti
+Peneliti -> Main : runNeuralNetwork()
+activate Main
+Main -> RunNeuralNetworkWorker : execute()
+activate RunNeuralNetworkWorker
+RunNeuralNetworkWorker -> NeuralNetwork : fit()
+activate NeuralNetwork
+NeuralNetwork -> NeuralNetwork : feedforward(data)
+activate NeuralNetwork
+NeuralNetwork -> NeuralNetwork : calculateInputHidden1()
+activate NeuralNetwork
+NeuralNetwork -> Activation : sigmoid()
+activate Activation
+deactivate Activation
+deactivate NeuralNetwork
+NeuralNetwork -> NeuralNetwork : calculateHidden1Hidden2()
+activate NeuralNetwork
+NeuralNetwork -> Activation : sigmoid()
+activate Activation
+deactivate Activation
+deactivate NeuralNetwork
+NeuralNetwork -> NeuralNetwork : calculateHidden2Output()
+activate NeuralNetwork
+NeuralNetwork -> Activation : softmax()
+activate Activation
+deactivate Activation
+deactivate NeuralNetwork
+deactivate NeuralNetwork
+
+NeuralNetwork -> NeuralNetwork : backpropagation()
+activate NeuralNetwork
+NeuralNetwork -> Loss : crossEntropy()
+activate Loss
+Loss --> NeuralNetwork : entropy
+deactivate Loss
+activate NeuralNetwork
+NeuralNetwork -> Activation : sigmoidDerivatives()
+activate Activation
+deactivate Activation
+deactivate NeuralNetwork
+deactivate NeuralNetwork
+
+NeuralNetwork -> NeuralNetwork : saveWeight()
+activate NeuralNetwork
+deactivate NeuralNetwork
+
+NeuralNetwork -> NeuralNetwork : score()
+activate NeuralNetwork
+NeuralNetwork -> NeuralNetwork : loadWeight()
+activate NeuralNetwork
+deactivate NeuralNetwork
+NeuralNetwork -> NeuralNetwork : feedforward(data)
+activate NeuralNetwork
+deactivate NeuralNetwork
+NeuralNetwork --> NeuralNetwork : cm
+deactivate NeuralNetwork
+NeuralNetwork --> RunNeuralNetworkWorker : cm
+
+
+@enduml

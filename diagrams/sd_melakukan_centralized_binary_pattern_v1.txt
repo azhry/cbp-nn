@@ -1,0 +1,28 @@
+@startuml
+hide footbox
+title Melakukan Centralized Binary Pattern\n
+
+actor Peneliti
+boundary Main
+control FileHandler
+control RunCbpWorker
+entity ImageData
+
+activate Peneliti
+ref over Main, FileHandler, ImageData : Memuat Data
+Peneliti -> Main : runCbp()
+activate Main
+Main -> RunCbpWorker : execute()
+activate RunCbpWorker
+loop each data
+   RunCbpWorker -> ImageData : getBufferCbpImage()
+   activate ImageData
+   ImageData -> ImageData : cbp()
+   activate ImageData
+   deactivate ImageData
+   ImageData --> RunCbpWorker : cbpImage
+end
+deactivate RunCbpWorker
+@enduml
+
+

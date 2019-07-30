@@ -1,0 +1,8 @@
+@startuml
+| Peneliti |
+start
+:Menekan tombol Run CBP;
+| Sistem |
+:Menampilkan hasil citra yang telah diproses\ndengan CBP;
+stop
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+| Peneliti |
+start
+:Memilih menu Program;
+| Sistem |
+:Menampilkan menu Program;
+| Peneliti |
+:Menekan tombol Load Image;
+| Sistem |
+:Menampilkan kotak dialog pemilihan Data;
+| Peneliti |
+:Memilih data yang ingin dimuat;
+| Sistem |
+:Menampilkan data yang dimuat;
+| Peneliti |
+:Menekan tombol Run Neural Network;
+| Sistem |
+:Melakukan klasifikasi dengan JST;
+:Menampilkan hasil klasifikasi;
+stop
+@enduml

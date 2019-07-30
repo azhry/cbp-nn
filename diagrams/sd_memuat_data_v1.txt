@@ -1,0 +1,36 @@
+@startuml
+hide footbox
+title Memuat Data\n
+
+actor Peneliti
+boundary Main
+boundary ImageRow
+control FileHandler
+Entity ImageData
+
+activate Peneliti
+Peneliti -> Main : loadImageData()
+activate Main
+Main -> FileHandler : read(path)
+activate FileHandler
+FileHandler -> FileHandler : readRecursive(path)
+activate FileHandler
+FileHandler -> FileHandler : readDirectoryContent(path)
+activate FileHandler
+deactivate FileHandler
+deactivate FileHandler
+deactivate FileHandler
+
+loop each file
+   create ImageRow
+   activate Main 
+   Main -> ImageRow : <<new ImageRow()>>
+   activate ImageRow
+   deactivate ImageRow
+   create ImageData
+   Main -> ImageData : <<new ImageData()>>
+   activate ImageData
+   deactivate ImageData
+   deactivate Main
+end
+@enduml

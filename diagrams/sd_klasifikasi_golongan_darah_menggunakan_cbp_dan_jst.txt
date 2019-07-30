@@ -1,0 +1,37 @@
+@startuml
+hide footbox
+title Klasifikasi Golongan Darah Menggunakan\nCBP dan Jaringan Syaraf Tiruan\nPropagasi Balik
+
+actor Peneliti
+boundary Main
+control FileHandler
+control NeuralNetwork
+
+activate Peneliti
+Peneliti -> Main : loadImageData()
+activate Main
+Main -> FileHandler : read(path)
+activate FileHandler
+FileHandler -> FileHandler : readRecursive(path)
+activate FileHandler
+FileHandler -> FileHandler : readDirectoryContent(path)
+activate FileHandler
+deactivate FileHandler
+deactivate FileHandler
+deactivate FileHandler
+
+deactivate Main
+Peneliti -> Main : runNeuralNetworkProgramButton()
+activate Main
+Main -> NeuralNetwork : predict(data)
+activate NeuralNetwork
+NeuralNetwork -> NeuralNetwork : loadWeight()
+activate NeuralNetwork
+deactivate NeuralNetwork
+NeuralNetwork -> NeuralNetwork : feedforward(data)
+activate NeuralNetwork
+deactivate NeuralNetwork
+
+NeuralNetwork -> Main : predicted
+
+@enduml

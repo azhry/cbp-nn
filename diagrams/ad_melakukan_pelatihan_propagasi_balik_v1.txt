@@ -1,0 +1,15 @@
+@startuml
+| Peneliti |
+start
+:Memilih menu Classification;
+| Sistem |
+:Menampilkan menu Classification;
+| Peneliti |
+:Menekan tombol Run Neural Network;
+| Sistem |
+:Melakukan Pelatihan JST;
+:Menampilkan proses pelatihan JST;
+:Menyimpan bobot hasil pelatihan JST;
+:Menampilkan hasil pelatihan JST;
+stop
+@enduml
