@@ -9,6 +9,7 @@ import Control.FileHandler;
 import Control.MathFx;
 import Entity.ImageData;
 import NeuralNetwork.NeuralNetwork;
+import NeuralNetwork.NeuralNetwork2;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -90,6 +91,8 @@ public class Main extends javax.swing.JFrame {
         learningRateField = new javax.swing.JTextField();
         runNeuralNetworkButton = new javax.swing.JButton();
         runNeuralNetworkButton1 = new javax.swing.JButton();
+        dropoutRateField = new javax.swing.JTextField();
+        jLabel23 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         classifiedRatio = new javax.swing.JLabel();
@@ -272,6 +275,10 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        dropoutRateField.setText("0.15");
+
+        jLabel23.setText("Dropout Rate");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -288,7 +295,10 @@ public class Main extends javax.swing.JFrame {
                                     .addComponent(epochField, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(learningRateField, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.LEADING)))
+                                        .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(dropoutRateField, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.LEADING)))
                                 .addGap(27, 27, 27)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(runNeuralNetworkButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -316,7 +326,11 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(learningRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(runNeuralNetworkButton1))
-                .addGap(0, 150, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(dropoutRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 115, Short.MAX_VALUE))
         );
 
         jSplitPane3.setLeftComponent(jPanel5);
@@ -638,9 +652,11 @@ public class Main extends javax.swing.JFrame {
         int epoch = Integer.parseInt(String.valueOf(this.epochField.getValue()));
         double learningRate = Double.parseDouble(
             this.learningRateField.getText());
+        double dropoutRate = Double.parseDouble(
+            this.dropoutRateField.getText());
         double splitRatio = Double.parseDouble(this.splitRatioText.getText());
-        NeuralNetwork nn = new NeuralNetwork(finalFeatures, finalClasses,
-            labels.length + 2, learningRate, epoch, splitRatio);
+        NeuralNetwork2 nn = new NeuralNetwork2(finalFeatures, finalClasses,
+            labels.length + 2, 2, learningRate, epoch, splitRatio, dropoutRate);
         new RunNeuralNetworkWorker(nn, this.neuralNetworkProgressBar,
             this.neuralNetworkLossChart, this.rowLog, this.classifiedRatio,
             this.nnResultTable)
@@ -693,9 +709,11 @@ public class Main extends javax.swing.JFrame {
         int epoch = Integer.parseInt(String.valueOf(this.epochField.getValue()));
         double learningRate = Double.parseDouble(
             this.learningRateField.getText());
+        double dropoutRate = Double.parseDouble(
+            this.dropoutRateField.getText());
         double splitRatio = Double.parseDouble(this.splitRatioText.getText());
-        NeuralNetwork nn = new NeuralNetwork(finalFeatures, finalClasses,
-            labels.length + 2, learningRate, epoch, splitRatio);
+        NeuralNetwork2 nn = new NeuralNetwork2(finalFeatures, finalClasses,
+            labels.length + 2, 2, learningRate, epoch, splitRatio, dropoutRate);
         new RunNeuralNetworkWorker(nn, this.neuralNetworkProgressBar,
             this.neuralNetworkLossChart, this.rowLog, this.classifiedRatio,
             this.nnResultTable)
@@ -705,14 +723,14 @@ public class Main extends javax.swing.JFrame {
 
     class RunNeuralNetworkWorker extends SwingWorker {
 
-        private final NeuralNetwork nn;
+        private final NeuralNetwork2 nn;
         private final JProgressBar progressBar;
         private final javax.swing.JLabel lossChart;
         private final javax.swing.JLabel classifiedRatioText;
         private final javax.swing.JTable nnResultTable;
         private final List<OutputNeuronLog> logs;
         
-        public RunNeuralNetworkWorker(NeuralNetwork nn, 
+        public RunNeuralNetworkWorker(NeuralNetwork2 nn, 
                 JProgressBar progressBar, javax.swing.JLabel lossChart, 
                 List<OutputNeuronLog> logs, 
                 javax.swing.JLabel classifiedRatioText, 
@@ -960,12 +978,14 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel classifiedRatio;
+    private javax.swing.JTextField dropoutRateField;
     private javax.swing.JSpinner epochField;
     private javax.swing.JPanel imageListPanel;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
