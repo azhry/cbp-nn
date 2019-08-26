@@ -864,6 +864,7 @@ public class Main extends javax.swing.JFrame {
            for (int i = 0; i < this.data.size(); i++) {
                ImageData id = this.data.get(i);
                Image filteredImage = id.getBufferCbpImg();
+//               Image filteredImage = id.getBufferSobelFilteredImg();
                this.rowData.get(i).filteredImage
                        .setIcon(new ImageIcon(filteredImage));
            }
