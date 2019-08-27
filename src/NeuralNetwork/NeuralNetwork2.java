@@ -125,10 +125,10 @@ public class NeuralNetwork2 {
     // incoming changes
     public NeuralNetwork2(double[][] data, double[][] target, 
             int numHiddens, int numHiddenLayers, double learningRate, int epoch, 
-            double splitRatio, double dropoutRate) {
+            double splitRatio) {
         this.numHiddenNeuron = numHiddens;
         this.NUM_HIDDEN_LAYERS = numHiddenLayers;
-        this.dropoutRate = dropoutRate;
+        this.dropoutRate = 0.0;
         int numData = data.length;
         this.data = new double[(int)(numData * splitRatio)][data[0].length];
         this.target = new double[(int)(numData * splitRatio)][target[0].length];
